@@ -22,10 +22,10 @@ jobs:
         
     - name: Сборка проекта (Build)
       run: |
-        echo "Запуск сборки PartsUnlimitedMRP..."
+        echo "Starting build PartsUnlimitedMRP..."
         New-Item -ItemType Directory -Force -Path drop
-        Set-Content -Path drop/app.jar -Value "Скомпилированный бинарный файл"
-        echo "Сборка завершена успешно!"
+        Set-Content -Path drop/app.jar -Value "Compiled binary file"
+        echo "Build completed successfully!"
       
     - name: Публикация артефакта (Publish Artifact)
       uses: actions/upload-artifact@v4
