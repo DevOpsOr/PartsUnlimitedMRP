@@ -1,4 +1,4 @@
-name: CI Build
+name: CI/CD Pipeline
 
 on:
   push:
@@ -9,26 +9,36 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-
     steps:
     - name: Получение исходного кода (Checkout)
       uses: actions/checkout@v4
       
-    - name: Подготовка окружения (Setup Java)
-      uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        
     - name: Сборка проекта (Build)
       run: |
         echo "Starting build PartsUnlimitedMRP..."
         New-Item -ItemType Directory -Force -Path drop
-        Set-Content -Path drop/app.jar -Value "Compiled binary file"
+        Set-Content -Path drop/app.zip -Value "Скомпилированный ZIP-пакет веб-приложения"
         echo "Build completed successfully!"
       
-    - name: Публикация артефакта (Publish Artifact)
+    - name: Опубликовать артефакты сборки (Publish build artifacts)
       uses: actions/upload-artifact@v4
       with:
         name: drop
         path: drop/
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    
+    steps:
+    - name: Загрузить артефакты сборки (Download build artifacts)
+      uses: actions/download-artifact@v4
+      with:
+        name: drop
+        path: drop/
+
+    - name: Развертывание службы приложений (Deploy)
+      run: |
+        echo "Авторизация в облачной среде..."
+        echo "Загрузка пакета drop/app.zip на целевой сервер..."
+        echo "Развертывание завершено успешно! Имитация веб-сайта запущена."
