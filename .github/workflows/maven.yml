@@ -13,10 +13,7 @@ jobs:
     - name: Получение исходного кода
       uses: actions/checkout@v4
       
-    - name: Запуск автотестов
-      run: ./test_math.ps1
-      
-    - name: Сборка проекта
+    - name: Сборка проекта (Build)
       run: |
         echo "Starting build PartsUnlimitedMRP..."
         New-Item -ItemType Directory -Force -Path drop
@@ -29,10 +26,19 @@ jobs:
         name: drop
         path: drop/
 
-  deploy:
+  test:
     runs-on: self-hosted
     needs: build
-    
+    steps:
+    - name: Получение исходного кода
+      uses: actions/checkout@v4
+      
+    - name: Запуск автотестов
+      run: ./test_math.ps1
+
+  deploy:
+    runs-on: self-hosted
+    needs: test
     steps:
     - name: Download build artifacts
       uses: actions/download-artifact@v4
