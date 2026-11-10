@@ -1,9 +1,13 @@
 . .\math.ps1
-$result = Add-Numbers 5 5
-if ($result -eq 10) {
-    Write-Host "Тест пройден успешно: 5 + 5 = 10"
+
+$a = 5
+$b = 5
+$expected = 10
+$result = Add-Numbers $a $b
+if ($result -eq $expected) {
+    Write-Host "Test passed successfully: $a + $b = $result"
     exit 0
 } else {
-    Write-Error "Тест не пройде. Ожидалось 10, получено $result"
+    Write-Error "Test failed. Expected $expected for $a + $b, but got $result"
     exit 1
 }
