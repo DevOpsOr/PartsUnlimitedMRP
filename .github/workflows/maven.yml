@@ -36,6 +36,14 @@ jobs:
     - name: Запуск автотестов
       run: ./test_math.ps1
 
+    - name: Визуализация результатов
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Отчет по модульным тестам
+        path: test-results.xml
+        reporter: java-junit
+
   deploy:
     runs-on: self-hosted
     needs: test
