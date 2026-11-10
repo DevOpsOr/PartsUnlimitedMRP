@@ -10,17 +10,20 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-    - name: Получение исходного кода (Checkout)
+    - name: Получение исходного кода
       uses: actions/checkout@v4
       
-    - name: Сборка проекта (Build)
+    - name: Запуск автотестов
+      run: ./test_math.ps1
+      
+    - name: Сборка проекта
       run: |
         echo "Starting build PartsUnlimitedMRP..."
         New-Item -ItemType Directory -Force -Path drop
         Set-Content -Path drop/app.zip -Value "Скомпилированный ZIP-пакет веб-приложения"
         echo "Build completed successfully!"
       
-    - name: Опубликовать артефакты сборки (Publish build artifacts)
+    - name: Publish build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: drop
@@ -31,13 +34,13 @@ jobs:
     needs: build
     
     steps:
-    - name: Загрузить артефакты сборки (Download build artifacts)
+    - name: Download build artifacts
       uses: actions/download-artifact@v4
       with:
         name: drop
         path: drop/
 
-    - name: Развертывание службы приложений (Deploy)
+    - name: Развертывание службы приложений
       run: |
         echo "Авторизация в облачной среде..."
         echo "Загрузка пакета drop/app.zip на целевой сервер..."
